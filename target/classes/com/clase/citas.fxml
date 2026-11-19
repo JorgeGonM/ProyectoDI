@@ -111,8 +111,8 @@
                   <TableColumn fx:id="colcitaiddoc" prefWidth="250.0" text="Doctor" />
                   <TableColumn fx:id="colespec" prefWidth="200.0" text="Especialidad" />
                   <TableColumn fx:id="colfechacita" prefWidth="150.0" styleClass="alineacion-centrada" text="Dia" />
-                  <TableColumn fx:id="colhoracita" prefWidth="350.0" text="Hora" />
-                  <TableColumn fx:id="colestadocita" prefWidth="150.0" text="Estado" />
+                  <TableColumn fx:id="colhoracita" prefWidth="150.0" text="Hora" />
+                  <TableColumn fx:id="colestadocita" prefWidth="200.0" text="Estado" />
                </columns>
                <opaqueInsets>
                   <Insets />

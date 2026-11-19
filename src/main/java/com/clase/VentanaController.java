@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import com.clase.informes.imprimirPacientes;
+
 
 public class VentanaController {
 
@@ -26,6 +28,12 @@ public class VentanaController {
         doctoresController.setCitasController(citasController);
     }
     
+    @FXML
+    private void informePacientes() {
+        System.out.println("PULSADO INFORME PACIENTES");
+        imprimirPacientes.mostrar();    
+    }
+
     @FXML 
     private void salirApp(){
         Platform.exit();

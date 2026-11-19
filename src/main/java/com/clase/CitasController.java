@@ -78,6 +78,7 @@ public class CitasController implements Initializable {
             if (!paciente.getDni().equals(citadnipac.getText())) {
                 limpiarDatosCita();
             }
+            citaiddoc.clear();
             citadnipac.setText(paciente.getDni());
             lblNombrePaciente.setText(paciente.getNombre() + " " + paciente.getApellidos());
             cargarCitas();
@@ -244,7 +245,7 @@ public class CitasController implements Initializable {
     private void cargarCitas() {
         String dniPaciente = citadnipac.getText().trim();
         String idDoctor = citaiddoc.getText().trim();
-        if (dniPaciente.isEmpty() || idDoctor.isEmpty()) {
+        if (dniPaciente.isEmpty() && idDoctor.isEmpty()) {
             tablaCitas.getItems().clear();
             return;
         }

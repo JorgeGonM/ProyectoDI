@@ -1,5 +1,6 @@
 com\clase\modelo\Doctor.class
 com\clase\persistencia\CitaDAOMySQL.class
+com\clase\informes\imprimirPacientes.class
 com\clase\PacientesController.class
 com\clase\DoctoresController.class
 com\clase\persistencia\PacienteDAOMySQL.class

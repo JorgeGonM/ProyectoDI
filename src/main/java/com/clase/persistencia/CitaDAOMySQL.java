@@ -5,12 +5,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.clase.modelo.Cita;
 
 public class CitaDAOMySQL implements CitaDAO {
+
+    private static final DateTimeFormatter HORA_BD =
+            DateTimeFormatter.ofPattern("HH:mm:ss");
+
+    private static String formatearHoraBD(LocalTime hora) {
+        return hora.format(HORA_BD);
+    }
+
+    private static LocalTime leerHoraBD(String hora) {
+        if (hora == null || hora.trim().isEmpty()) {
+            return null;
+        }
+
+        String valor = hora.trim();
+        if (valor.length() == 4 || valor.length() == 5) {
+            return LocalTime.parse(valor, DateTimeFormatter.ofPattern("H:mm"));
+        }
+        return LocalTime.parse(valor, HORA_BD);
+    }
 
     @Override
     public void guardarCita(Cita cita) throws SQLException {
@@ -25,7 +46,7 @@ public class CitaDAOMySQL implements CitaDAO {
             ps.setString(1, cita.getCitadnipac());
             ps.setString(2, cita.getCitaiddoc());
             ps.setDate(3, java.sql.Date.valueOf(cita.getFechacita()));
-            ps.setTime(4, java.sql.Time.valueOf(cita.getHoracita()));
+            ps.setString(4, formatearHoraBD(cita.getHoracita()));
             ps.setString(5, cita.getMotivo());
             ps.setString(6, cita.getDiagnostico());
             ps.setString(7, cita.getTratamiento());
@@ -50,14 +71,26 @@ public class CitaDAOMySQL implements CitaDAO {
                 + "FROM citas c "
                 + "LEFT JOIN pacientes p ON c.citadnipac = p.dnipac "
                 + "LEFT JOIN doctores d ON c.citaiddoc = d.iddoc "
-                + "WHERE c.citadnipac = ? AND c.citaiddoc = ? "
-                + "ORDER BY c.fechacita, c.horacita";
+                + "WHERE 1 = 1 ";
+
+        if (dniPaciente != null && !dniPaciente.trim().isEmpty()) {
+            sql += "AND c.citadnipac = ? ";
+        }
+        if (idDoctor != null && !idDoctor.trim().isEmpty()) {
+            sql += "AND c.citaiddoc = ? ";
+        }
+        sql += "ORDER BY c.fechacita, c.horacita";
 
         try (Connection conexion = ConexionMySQL.getConexion();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
 
-            ps.setString(1, dniPaciente);
-            ps.setString(2, idDoctor);
+            int posicion = 1;
+            if (dniPaciente != null && !dniPaciente.trim().isEmpty()) {
+                ps.setString(posicion++, dniPaciente.trim());
+            }
+            if (idDoctor != null && !idDoctor.trim().isEmpty()) {
+                ps.setString(posicion, idDoctor.trim());
+            }
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -66,7 +99,7 @@ public class CitaDAOMySQL implements CitaDAO {
                             rs.getString("citadnipac"),
                             rs.getString("citaiddoc"),
                             rs.getDate("fechacita").toLocalDate(),
-                            rs.getTime("horacita").toLocalTime(),
+                            leerHoraBD(rs.getString("horacita")),
                             rs.getString("motivo"),
                             rs.getString("diagnostico"),
                             rs.getString("tratamiento"),
@@ -94,7 +127,7 @@ public class CitaDAOMySQL implements CitaDAO {
             ps.setString(1, cita.getCitadnipac());
             ps.setString(2, cita.getCitaiddoc());
             ps.setDate(3, java.sql.Date.valueOf(cita.getFechacita()));
-            ps.setTime(4, java.sql.Time.valueOf(cita.getHoracita()));
+            ps.setString(4, formatearHoraBD(cita.getHoracita()));
             ps.setString(5, cita.getMotivo());
             ps.setString(6, cita.getDiagnostico());
             ps.setString(7, cita.getTratamiento());

@@ -33,7 +33,9 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Informes">
             <items>
-              <MenuItem mnemonicParsing="false" text="Informe pacientes" />
+               <MenuItem fx:id="informePacientes" mnemonicParsing="false" onAction="#informePacientes" text="Informe Pacientes" />
+               <MenuItem mnemonicParsing="false" text="Informe Doctores" />
+               <MenuItem mnemonicParsing="false" text="Imprimir Cita" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Acerca">

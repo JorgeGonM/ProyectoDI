@@ -549,6 +549,10 @@ public class PacientesController implements Initializable{
         propac.setValue(paciente.getProvincia());
         cargarMunicipios();
         munipac.setValue(paciente.getMunicipio());
+
+        if (citasController != null) {
+            citasController.cargarDatosPaciente(paciente);
+        }
         
     }
 
