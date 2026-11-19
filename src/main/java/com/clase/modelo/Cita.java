@@ -8,20 +8,23 @@ public class Cita {
 
     private int idcita;
     private String citadnipac;
-    private int citaiddoc;
+    private String citaiddoc;
     private LocalDate fechacita;
     private LocalTime horacita;
     private String motivo;
     private String diagnostico;
     private String tratamiento;
     private String estadocita;
+    private String nombrePaciente;
+    private String nombreDoctor;
+    private String especialidad;
 
     // Constructor vacío
     public Cita() {
     }
 
     // Constructor con todos los campos
-    public Cita(int idcita, String citadnipac, int citaiddoc,
+    public Cita(int idcita, String citadnipac, String citaiddoc,
                 LocalDate fechacita, LocalTime horacita,
                 String motivo, String diagnostico,
                 String tratamiento, String estadocita) {
@@ -55,11 +58,11 @@ public class Cita {
         this.citadnipac = citadnipac;
     }
 
-    public int getCitaiddoc() {
+    public String getCitaiddoc() {
         return citaiddoc;
     }
 
-    public void setCitaiddoc(int citaiddoc) {
+    public void setCitaiddoc(String citaiddoc) {
         this.citaiddoc = citaiddoc;
     }
 
@@ -109,5 +112,29 @@ public class Cita {
 
     public void setEstadocita(String estadocita) {
         this.estadocita = estadocita;
+    }
+
+    public String getNombrePaciente() {
+        return nombrePaciente;
+    }
+
+    public void setNombrePaciente(String nombrePaciente) {
+        this.nombrePaciente = nombrePaciente;
+    }
+
+    public String getNombreDoctor() {
+        return nombreDoctor;
+    }
+
+    public void setNombreDoctor(String nombreDoctor) {
+        this.nombreDoctor = nombreDoctor;
+    }
+
+    public String getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
     }
 }

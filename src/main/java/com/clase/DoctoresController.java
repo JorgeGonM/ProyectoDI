@@ -46,6 +46,11 @@ public class DoctoresController implements Initializable{
     private TableColumn<Doctor, String> coliddoc, colapeldoc, colnomdoc, colmovildoc, colespedoc;
    
     boolean doctorExiste = false;
+    private CitasController citasController;
+
+    public void setCitasController(CitasController citasController) {
+        this.citasController = citasController;
+    }
 
     @Override 
     public void initialize(URL url, ResourceBundle rb){
@@ -101,6 +106,9 @@ public class DoctoresController implements Initializable{
         tablaDoctores.getSelectionModel().selectedItemProperty().addListener((observable, anterior, nuevo) -> {
             if (nuevo != null) {
                 cargarDoctor();
+                if (citasController != null) {
+                    citasController.cargarDatosDoctor(nuevo);
+                }
             }
         });
 

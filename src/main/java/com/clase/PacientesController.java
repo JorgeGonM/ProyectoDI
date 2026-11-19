@@ -3,6 +3,7 @@ package com.clase;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +48,11 @@ public class PacientesController implements Initializable{
     private TableColumn<Paciente, String> coldnipac, colapelpac, colnompac, colmovilpac, colpropac, colmunipac;
    
     boolean pacienteExiste = false;
+    private CitasController citasController;
+
+    public void setCitasController(CitasController citasController) {
+        this.citasController = citasController;
+    }
 
     @Override 
     public void initialize(URL url, ResourceBundle rb){
@@ -104,6 +110,9 @@ public class PacientesController implements Initializable{
         tablaPacientes.getSelectionModel().selectedItemProperty().addListener((observable, anterior, nuevo) -> {
             if (nuevo != null) {
                 cargarPaciente();
+                if (citasController != null) {
+                    citasController.cargarDatosPaciente(nuevo);
+                }
             }
         });
 
@@ -382,14 +391,23 @@ public class PacientesController implements Initializable{
             
                 //Si el paciente no existe, lo guardamos en la BBDD
                 PacienteDAOMySQL dao = new PacienteDAOMySQL();
-                dao.guardarPaciente(paciente);
+                try {
+                    dao.guardarPaciente(paciente);
+                } catch (SQLException e) {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("No se pudo guardar el paciente");
+                    error.setContentText(e.getMessage());
+                    error.showAndWait();
+                    return;
+                }
 
-            //Alerta
-            Alert alert3 = new Alert(Alert.AlertType.INFORMATION);
-            alert3.setTitle("Información");
-            alert3.setHeaderText(null);
-            alert3.setContentText("Paciente guardado correctamente");
-            alert3.showAndWait();
+                //Alerta
+                Alert alert3 = new Alert(Alert.AlertType.INFORMATION);
+                alert3.setTitle("Información");
+                alert3.setHeaderText(null);
+                alert3.setContentText("Paciente guardado correctamente");
+                alert3.showAndWait();
             }else{
                 return;
             }

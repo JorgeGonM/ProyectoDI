@@ -12,14 +12,14 @@ import com.clase.modelo.Paciente;
 public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la interfaz
     
     @Override 
-    public void guardarPaciente(Paciente paciente){
+    public void guardarPaciente(Paciente paciente) throws SQLException {
         
         String sql = "INSERT INTO pacientes " 
                     + "(dnipac, apelpac, nompac, movilpac, emailpac, nacpac, dirpac, propac, munipac) "
                     + "VALUES (?,?,?,?,?,?,?,?,?)";
 
         try (Connection conexion = ConexionMySQL.getConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql)){
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setString(1, paciente.getDni());
             ps.setString(2, paciente.getApellidos());                
@@ -34,10 +34,6 @@ public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la 
             ps.executeUpdate();
 
             System.out.println("Paciente guardado correctamente.");
-                
-            
-        } catch (SQLException e) {
-            System.out.println("Error al guardar el paciente: " + e.getMessage());
         }
 
     }

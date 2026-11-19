@@ -10,6 +10,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class VentanaController {
+
+    @FXML
+    private PacientesController pacientesController;
+
+    @FXML
+    private DoctoresController doctoresController;
+
+    @FXML
+    private CitasController citasController;
+
+    @FXML
+    private void initialize() {
+        pacientesController.setCitasController(citasController);
+        doctoresController.setCitasController(citasController);
+    }
     
     @FXML 
     private void salirApp(){
