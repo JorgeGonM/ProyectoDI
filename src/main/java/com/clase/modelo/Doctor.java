@@ -1,5 +1,9 @@
 package com.clase.modelo;
 
+/**
+ * Modelo de datos de doctor compartido por el formulario, la tabla, las citas
+ * y DoctorDAOMySQL.
+ */
 public class Doctor {
     private String iddoc;
     private String apeldoc;
@@ -9,7 +13,7 @@ public class Doctor {
     private Boolean coledoc;
     private String espedoc;
 
-    //Modelo para crear doctor
+    // Constructor de los datos editables del formulario.
     public Doctor(String apeldoc, String nomdoc,
             String movildoc, String emaildoc, Boolean coledoc,
             String espedoc) {
@@ -21,7 +25,7 @@ public class Doctor {
         this.espedoc = espedoc;
     }
 
-    //Modelo para la tabla
+    // Constructor reducido con los campos que aparecen en la tabla.
     public Doctor(String iddcoc, String apeldoc, String nomdoc,
             String movildoc, String espedoc) {
         this.iddoc = iddcoc;
@@ -31,6 +35,7 @@ public class Doctor {
         this.espedoc = espedoc;
     }
 
+    // Constructor con los datos editables y el identificador de doctor.
     public Doctor(String iddoc, String apeldoc, String nomdoc,
             String movildoc, String emaildoc, Boolean coledoc,
             String espedoc) {
@@ -42,6 +47,7 @@ public class Doctor {
         this.espedoc = espedoc;
     }
 
+    // Accesores usados por los controladores, la tabla y la capa de persistencia.
     public String getIddoc() {
         return iddoc;
     }

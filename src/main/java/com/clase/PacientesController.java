@@ -27,8 +27,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * Gestiona el formulario de pacientes: validacion, carga de datos de recursos,
+ * operaciones CRUD mediante PacienteDAOMySQL y comunicacion con las citas.
+ */
 public class PacientesController implements Initializable{
    
+    // Estos nombres deben coincidir con los fx:id de pacientes.fxml.
     @FXML 
     private TextField dnipac, apelpac, nompac, movilpac, emailpac, dirpac;
 
@@ -50,10 +55,12 @@ public class PacientesController implements Initializable{
     boolean pacienteExiste = false;
     private CitasController citasController;
 
+    // Se establece desde VentanaController despues de cargar los fx:include.
     public void setCitasController(CitasController citasController) {
         this.citasController = citasController;
     }
 
+    // JavaFX llama a initialize cuando ya ha inyectado los controles del FXML.
     @Override 
     public void initialize(URL url, ResourceBundle rb){
 
@@ -90,7 +97,10 @@ public class PacientesController implements Initializable{
         });
 
         cargarProvincias();
-        propac.setOnAction(e -> cargarMunicipios());
+        propac.setOnAction(e -> {
+            cargarMunicipios();
+            // cargarPacientesPorProvincia(); // Filtro desactivado temporalmente.
+        });
 
         //Vinculamos las columnas de la tabla con los atributos del modelo Paciente
 
@@ -120,7 +130,7 @@ public class PacientesController implements Initializable{
 
     }
 
-    //Comprobar DNI
+    // Valida el texto del campo al perder el foco y normaliza las letras a mayusculas.
     @FXML 
     private void comprobarDNI(){
         String dni = dnipac.getText().trim().toUpperCase();
@@ -137,7 +147,7 @@ public class PacientesController implements Initializable{
         
     }
 
-    //Validar DNI
+    // Comprueba formato y letra de control de un DNI o NIE.
     private boolean validarDNI(String documento){
         if (documento.matches("\\d{8}[A-Z]")) {
 
@@ -163,7 +173,7 @@ public class PacientesController implements Initializable{
         return false;
     }
 
-    //Letras Capitales
+    // Normaliza cada palabra para mostrar nombres y apellidos con inicial mayuscula.
     private String letrasCapitales(String texto){
 
         String[] palabras = texto.toLowerCase().trim().split("\\s+");
@@ -179,7 +189,7 @@ public class PacientesController implements Initializable{
 
     }
 
-    //Comprobar móvil
+    // Comprueba el movil cuando el campo pierde el foco.
     @FXML
     private void comprobarMovil(){
         String movil = movilpac.getText().trim().toUpperCase();
@@ -202,7 +212,7 @@ public class PacientesController implements Initializable{
         return movil.matches("[67][0-9]{8}");
     }
      
-    //Comprobar email
+    // Comprueba el email cuando el campo pierde el foco.
     @FXML
     private void comprobarEmail(){
         String email = emailpac.getText().trim();
@@ -319,6 +329,8 @@ public class PacientesController implements Initializable{
     }
 
 
+    // Convierte el formulario en un Paciente y decide entre alta o modificacion
+    // usando pacienteExiste; al terminar actualiza tabla y formulario.
     @FXML
     private void guardarPaciente(){
 
@@ -327,6 +339,17 @@ public class PacientesController implements Initializable{
             System.out.println("Deber introducir la fecha de nacimiento: ");
             return;
         }
+
+        /*
+        if (nacpac.getValue().isAfter(LocalDate.now())) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle("Fecha de nacimiento no válida");
+            alerta.setHeaderText(null);
+            alerta.setContentText("La fecha de nacimiento no puede ser posterior a hoy.");
+            alerta.showAndWait();
+            return;
+        }
+        */
 
     
         String dni = dnipac.getText();
@@ -435,7 +458,7 @@ public class PacientesController implements Initializable{
     }
 
 
-    //Cargar pacientes en la tabla
+    // Consulta el DAO y reemplaza las filas visibles de la tabla.
     @FXML 
     private void cargarPacientes(){
 
@@ -450,7 +473,30 @@ public class PacientesController implements Initializable{
 
     }
 
+    // Filtro de provincia desactivado temporalmente; se conserva como referencia.
+    /*
+    private void cargarPacientesPorProvincia() {
+        String provincia = propac.getValue();
+        if (provincia == null || provincia.trim().isEmpty()) {
+            cargarPacientes();
+            return;
+        }
 
+        PacienteDAOMySQL dao = new PacienteDAOMySQL();
+        try {
+            List<Paciente> pacientes = dao.buscarPacientesPorProvincia(provincia);
+            tablaPacientes.getItems().setAll(pacientes);
+        } catch (SQLException e) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("No se pudieron filtrar los pacientes");
+            error.setContentText(e.getMessage());
+            error.showAndWait();
+        }
+    }
+    */
+
+    // Elimina el paciente seleccionado tras pedir confirmacion y recarga la tabla.
     @FXML 
     private void eliminarPaciente(){
 
@@ -489,6 +535,7 @@ public class PacientesController implements Initializable{
     }
 
 
+    // Busca el registro completo del paciente seleccionado y rellena el formulario.
     @FXML 
     private void cargarPaciente(){
         Paciente pacienteSelect = tablaPacientes.getSelectionModel().getSelectedItem();
@@ -521,6 +568,7 @@ public class PacientesController implements Initializable{
     }
 
 
+    // Busca por DNI y, si existe, rellena el formulario y sincroniza la vista de citas.
     @FXML 
     private void buscaPacDni(){
 
@@ -558,6 +606,7 @@ public class PacientesController implements Initializable{
 
 
 
+    // Limpia los controles del formulario; se reutiliza tras guardar y desde el FXML.
     @FXML
     private void limpiarCampos() {
         dnipac.clear();

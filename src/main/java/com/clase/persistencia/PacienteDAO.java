@@ -4,11 +4,15 @@ import java.sql.SQLException;
 
 import com.clase.modelo.Paciente;
 
-// Es la interfaz. Solo dice qué operaciones podemos hacer con un paciente, no cómo se hace.
-
+/**
+ * Contrato de persistencia de pacientes: declara las operaciones disponibles
+ * sin acoplar a quienes lo usan a una base de datos concreta.
+ */
 public interface PacienteDAO {
+    // Alta, listado, busqueda, baja, modificacion y busqueda especifica por DNI.
     void guardarPaciente(Paciente paciente) throws SQLException;
     List<Paciente> cargarPacientes();
+    // List<Paciente> buscarPacientesPorProvincia(String provincia) throws SQLException;
     Paciente buscarPaciente(String dni);
     void eliminarPaciente(String dni);
     void modificarPaciente(String dni, Paciente paciente);

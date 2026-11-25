@@ -1,9 +1,11 @@
+/* Estilos base compartidos por todas las vistas JavaFX. */
 .root {
     -fx-font-family: "Segoe UI";
     -fx-font-size: 14px;
     -fx-background-color: #f3f8f8;
 }
 
+/* Colores generales de etiquetas, pestanas y titulos. */
 .label {
     -fx-text-fill: #243b45;
 }
@@ -23,6 +25,7 @@
     -fx-background-color: transparent;
 }
 
+/* Alineacion y presentacion de las tablas. */
 .alineacion-centrada {
     -fx-alignment: CENTER;
 }
@@ -44,6 +47,7 @@
     -fx-font-weight: bold;
 }
 
+/* Campos de entrada y su estado enfocado. */
 .text-field,
 .combo-box,
 .date-picker {
@@ -61,6 +65,7 @@
     -fx-border-width: 2px;
 }
 
+/* Botones comunes y estados de interaccion. */
 .button {
     -fx-background-color: #dcefea;
     -fx-text-fill: #23434c;
@@ -83,6 +88,7 @@
     -fx-border-radius: 5px;
 }
 
+/* Variantes de botones de alta y eliminacion usadas desde FXML. */
 .guardar {
     -fx-background-color: #2e8b57;
     -fx-text-fill: white;
@@ -109,6 +115,7 @@
     -fx-background-color: #913232;
 }
 
+/* Apariencia de botones de opcion y filas seleccionadas. */
 .radio-button {
     -fx-text-fill: #243b45;
 }

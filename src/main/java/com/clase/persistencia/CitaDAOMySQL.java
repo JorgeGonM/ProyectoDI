@@ -12,15 +12,19 @@ import java.util.List;
 
 import com.clase.modelo.Cita;
 
+/** Implementacion MySQL del contrato CitaDAO, incluidas las relaciones de consulta. */
 public class CitaDAOMySQL implements CitaDAO {
 
+    // La base de datos almacena la hora con segundos; la vista trabaja con hora:minuto.
     private static final DateTimeFormatter HORA_BD =
             DateTimeFormatter.ofPattern("HH:mm:ss");
 
+    // Convierte el valor del modelo al formato de hora de MySQL.
     private static String formatearHoraBD(LocalTime hora) {
         return hora.format(HORA_BD);
     }
 
+    // Acepta tanto horas mostradas en la interfaz (9:00) como el formato SQL.
     private static LocalTime leerHoraBD(String hora) {
         if (hora == null || hora.trim().isEmpty()) {
             return null;
@@ -35,6 +39,7 @@ public class CitaDAOMySQL implements CitaDAO {
 
     @Override
     public void guardarCita(Cita cita) throws SQLException {
+        // RETURN_GENERATED_KEYS permite recuperar el ID autogenerado por MySQL.
         String sql = "INSERT INTO citas "
                 + "(citadnipac, citaiddoc, fechacita, horacita, motivo, "
                 + "diagnostico, tratamiento, estadocita) "
@@ -64,6 +69,7 @@ public class CitaDAOMySQL implements CitaDAO {
     @Override
     public List<Cita> cargarCitas(String dniPaciente, String idDoctor) throws SQLException {
         List<Cita> citas = new ArrayList<>();
+        // Los JOIN agregan nombres y especialidad para mostrar la cita en la tabla.
         String sql = "SELECT c.idcita, c.citadnipac, c.citaiddoc, c.fechacita, "
                 + "c.horacita, c.motivo, c.diagnostico, c.tratamiento, c.estadocita, "
                 + "CONCAT(p.nompac, ' ', p.apelpac) AS nombrePaciente, "
@@ -73,6 +79,7 @@ public class CitaDAOMySQL implements CitaDAO {
                 + "LEFT JOIN doctores d ON c.citaiddoc = d.iddoc "
                 + "WHERE 1 = 1 ";
 
+        // Se incorporan solo los filtros que tienen valor; sus parametros se enlazan abajo.
         if (dniPaciente != null && !dniPaciente.trim().isEmpty()) {
             sql += "AND c.citadnipac = ? ";
         }
@@ -117,6 +124,7 @@ public class CitaDAOMySQL implements CitaDAO {
 
     @Override
     public boolean modificarCita(Cita cita) throws SQLException {
+        // Actualiza todos los campos por la clave primaria idcita.
         String sql = "UPDATE citas SET citadnipac = ?, citaiddoc = ?, fechacita = ?, "
                 + "horacita = ?, motivo = ?, diagnostico = ?, tratamiento = ?, estadocita = ? "
                 + "WHERE idcita = ?";
@@ -139,6 +147,7 @@ public class CitaDAOMySQL implements CitaDAO {
 
     @Override
     public boolean eliminarCita(int idcita) throws SQLException {
+        // El resultado indica si se encontro y elimino alguna fila.
         String sql = "DELETE FROM citas WHERE idcita = ?";
 
         try (Connection conexion = ConexionMySQL.getConexion();

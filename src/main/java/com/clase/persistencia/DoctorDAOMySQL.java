@@ -9,11 +9,13 @@ import java.util.List;
 
 import com.clase.modelo.Doctor;
 
+/** Implementacion MySQL del contrato DoctorDAO. */
 public class DoctorDAOMySQL implements DoctorDAO { // Implementación de la interfaz
     
     @Override 
     public void guardarDoctor(Doctor doctor){
         
+        // Cada parametro se asocia a una columna y se enlaza por posicion.
         String sql = "INSERT INTO doctores " 
                     + "(iddoc, apeldoc, nomdoc, movildoc, emaildoc, coledoc, espedoc) "
                     + "VALUES (?,?,?,?,?,?,?)";
@@ -40,7 +42,7 @@ public class DoctorDAOMySQL implements DoctorDAO { // Implementación de la inte
 
     }
 
-    // seleccionar doctores de la bbdd
+    // Recupera los campos que se muestran en la tabla de doctores.
      @Override
     public List<Doctor> cargarDoctores() {
 
@@ -77,6 +79,7 @@ public class DoctorDAOMySQL implements DoctorDAO { // Implementación de la inte
 
 
 
+    // El ID identifica al doctor que se elimina.
     @Override 
     public void eliminarDoctor(String id) {
         String sql = "DELETE FROM doctores WHERE iddoc = ?";
@@ -99,6 +102,7 @@ public class DoctorDAOMySQL implements DoctorDAO { // Implementación de la inte
     }
 
 
+    // Busca los datos completos necesarios para rellenar el formulario.
     @Override 
     public Doctor buscarDoctor(String iddoc) {
         String sql = "SELECT iddoc, apeldoc, nomdoc, movildoc, "
@@ -137,6 +141,7 @@ public class DoctorDAOMySQL implements DoctorDAO { // Implementación de la inte
     }
 
 
+    // Conserva el ID original para localizar la fila y actualiza sus demas datos.
     @Override 
     public void modificarDoctor(String id, Doctor doctor) {
         String sql = "UPDATE doctores SET "
@@ -173,7 +178,7 @@ public class DoctorDAOMySQL implements DoctorDAO { // Implementación de la inte
     }
 
 
-    //Devover List<Doctor>
+    // Devuelve todos los doctores cuya especialidad coincide con el filtro.
     @Override 
     public List<Doctor> buscaDocEspec(String especialidad) {
 

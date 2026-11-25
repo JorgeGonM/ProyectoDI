@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -35,8 +36,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * Gestiona citas y su tabla. Recibe paciente y doctor desde sus controladores,
+ * y delega las consultas y cambios persistentes en CitaDAOMySQL.
+ */
 public class CitasController implements Initializable {
 
+    // Controles enlazados por fx:id en citas.fxml.
     @FXML
     private TextField idcita, citaiddoc, citadnipac, motivo;
 
@@ -71,8 +77,10 @@ public class CitasController implements Initializable {
     private TableColumn<Cita, LocalTime> colhoracita;
 
     private final CitaDAOMySQL citaDAO = new CitaDAOMySQL();
+    private final List<Cita> citasCargadas = new ArrayList<>();
     private Cita citaSeleccionada;
 
+    // Llamado al seleccionar/buscar un paciente en la pestaña Pacientes.
     public void cargarDatosPaciente(Paciente paciente) {
         if (paciente != null) {
             if (!paciente.getDni().equals(citadnipac.getText())) {
@@ -85,6 +93,7 @@ public class CitasController implements Initializable {
         }
     }
 
+    // Llamado al seleccionar un doctor; ambos filtros pueden combinarse.
     public void cargarDatosDoctor(Doctor doctor) {
         if (doctor != null) {
             if (!doctor.getIddoc().equals(citaiddoc.getText())) {
@@ -95,6 +104,7 @@ public class CitasController implements Initializable {
         }
     }
 
+    // Enlaza columnas con propiedades del modelo y carga los datos iniciales.
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         colidcita.setCellValueFactory(new PropertyValueFactory<>("idcita"));
@@ -114,6 +124,7 @@ public class CitasController implements Initializable {
         });
     }
 
+    // Carga las horas predefinidas desde horario.json en el selector del formulario.
     private void cargarHorarios() {
         try (InputStream is = getClass().getResourceAsStream("/com/clase/data/horario.json")) {
             if (is == null) {
@@ -130,6 +141,7 @@ public class CitasController implements Initializable {
         }
     }
 
+    // Valida el formulario, crea el modelo y delega el alta o modificacion al DAO.
     @FXML
     private void guardarCita() {
         String dniPaciente = citadnipac.getText().trim();
@@ -193,6 +205,7 @@ public class CitasController implements Initializable {
         }
     }
 
+    // Copia a los controles los datos de la fila seleccionada para editarla.
     private void cargarCita(Cita cita) {
         citaSeleccionada = cita;
         idcita.setText(String.valueOf(cita.getIdcita()));
@@ -209,6 +222,7 @@ public class CitasController implements Initializable {
         chkanulada.setSelected("Anulada".equals(cita.getEstadocita()));
     }
 
+    // Elimina la cita actualmente seleccionada despues de pedir confirmacion.
     @FXML
     private void eliminarCita() {
         if (citaSeleccionada == null) {
@@ -241,23 +255,57 @@ public class CitasController implements Initializable {
         }
     }
 
+    // Filtra por paciente, doctor o ambos; sin filtros deja la tabla vacia.
     @FXML
     private void cargarCitas() {
         String dniPaciente = citadnipac.getText().trim();
         String idDoctor = citaiddoc.getText().trim();
         if (dniPaciente.isEmpty() && idDoctor.isEmpty()) {
+            citasCargadas.clear();
             tablaCitas.getItems().clear();
             return;
         }
 
         try {
             List<Cita> citas = citaDAO.cargarCitas(dniPaciente, idDoctor);
-            tablaCitas.getItems().setAll(citas);
+            citasCargadas.clear();
+            citasCargadas.addAll(citas);
+            // Muestra todas las citas cargadas, sin aplicar el filtro de estado.
+            tablaCitas.getItems().setAll(citasCargadas);
         } catch (SQLException e) {
             mostrarError("No se pudieron cargar las citas", e);
         }
     }
 
+    // Filtra en memoria las citas ya cargadas, sin consultar de nuevo la base de datos.
+    @FXML
+    private void buscarCitasPorEstado() {
+        String estado = obtenerEstadoSeleccionado();
+        if (estado == null) {
+            //mostrarAviso("Selecciona un estado antes de buscar.");
+            cargarCitas();
+            return;
+        } 
+        if (citasCargadas.isEmpty()) {
+            mostrarAviso("No hay citas cargadas en la tabla para filtrar.");
+            return;
+        }
+
+        limpiarDatosCita();
+        chkpendiente.setSelected("Pendiente".equals(estado));
+        chkatendida.setSelected("Atendida".equals(estado));
+        chkanulada.setSelected("Anulada".equals(estado));
+
+        List<Cita> citasFiltradas = new ArrayList<>();
+        for (Cita cita : citasCargadas) {
+            if (estado.equals(cita.getEstadocita())) {
+                citasFiltradas.add(cita);
+            }
+        }
+        tablaCitas.getItems().setAll(citasFiltradas);
+    }
+
+    // Traduce las casillas excluyentes a la etiqueta que se guarda en la BD.
     private String obtenerEstadoSeleccionado() {
         if (chkpendiente.isSelected()) {
             return "Pendiente";
@@ -271,15 +319,18 @@ public class CitasController implements Initializable {
         return null;
     }
 
+    // Limpia formulario, filtros y resultados de la tabla de citas.
     @FXML
     private void limpiarCamposCita() {
         limpiarDatosCita();
         citaiddoc.clear();
         citadnipac.clear();
         lblNombrePaciente.setText("");
+        citasCargadas.clear();
         tablaCitas.getItems().clear();
     }
 
+    // Limpia solo los campos propios de la cita, preservando paciente y doctor.
     private void limpiarDatosCita() {
         citaSeleccionada = null;
         tablaCitas.getSelectionModel().clearSelection();
@@ -294,6 +345,7 @@ public class CitasController implements Initializable {
         chkanulada.setSelected(false);
     }
 
+    // Centraliza los avisos de validacion que no requieren mostrar una excepcion.
     private void mostrarAviso(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Aviso");
@@ -302,6 +354,7 @@ public class CitasController implements Initializable {
         alert.showAndWait();
     }
 
+    // Presenta el error SQL al usuario, conservando el mensaje de la excepcion.
     private void mostrarError(String titulo, SQLException e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -310,6 +363,7 @@ public class CitasController implements Initializable {
         alert.showAndWait();
     }
 
+    // Hace mutuamente excluyentes los tres estados de cita del FXML.
     @FXML
     private void gestionarExclusion(ActionEvent event) {
         CheckBox seleccionado = (CheckBox) event.getSource();

@@ -4,6 +4,10 @@ package com.clase.modelo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Modelo de cita: contiene las claves del paciente y doctor, los datos clinicos
+ * y algunos campos descriptivos que se obtienen mediante JOIN para la tabla.
+ */
 public class Cita {
 
     private int idcita;
@@ -19,11 +23,11 @@ public class Cita {
     private String nombreDoctor;
     private String especialidad;
 
-    // Constructor vacío
+    // Constructor vacio disponible para herramientas que requieren crear el bean.
     public Cita() {
     }
 
-    // Constructor con todos los campos
+    // Construye una cita con los datos persistidos o introducidos en el formulario.
     public Cita(int idcita, String citadnipac, String citaiddoc,
                 LocalDate fechacita, LocalTime horacita,
                 String motivo, String diagnostico,
@@ -40,7 +44,7 @@ public class Cita {
         this.estadocita = estadocita;
     }
 
-    // Getters y Setters
+    // Getters y setters que conectan el modelo con PropertyValueFactory y los DAO.
 
     public int getIdcita() {
         return idcita;

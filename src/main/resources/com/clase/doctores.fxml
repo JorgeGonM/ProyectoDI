@@ -14,8 +14,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<!-- Formulario y tabla de doctores controlados por DoctoresController. -->
 <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clase.DoctoresController">
 
+    <!-- Identidad del doctor y acciones de busqueda/limpieza. -->
     <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="56.0" prefWidth="1280.0" styleClass="titulo-seccion" text="Xestión Doctores">
       <padding>
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -24,6 +26,7 @@
          <Insets left="30.0" right="30.0" top="20.0" />
       </VBox.margin>
       </Label>
+   <!-- Datos de contacto y colegiacion. -->
    <HBox alignment="CENTER" spacing="12.0">
       <children>
          <Label text="ID:" />
@@ -46,6 +49,7 @@
          <Insets left="20.0" right="20.0" />
       </VBox.margin>
    </HBox>
+   <!-- La especialidad se carga desde JSON; la lupa filtra la tabla. -->
    <HBox alignment="CENTER" spacing="12.0">
       <children>
          <Label text="Móvil:" />
@@ -57,6 +61,7 @@
          <Insets left="20.0" right="20.0" />
       </VBox.margin>
    </HBox>
+   <!-- Acciones CRUD conectadas mediante onAction al controlador. -->
    <HBox alignment="CENTER" spacing="12.0">
       <children>
          <Label text="Colegiado:" />
@@ -96,6 +101,7 @@
       </VBox.margin>
    </HBox>
    <Separator prefWidth="200.0" />
+   <!-- Las columnas se enlazan con las propiedades del modelo Doctor en initialize. -->
    <TableView fx:id="tablaDoctores" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1100.0">
      <columns>
          <TableColumn fx:id="coliddoc" prefWidth="140.0" styleClass="alineacion-centrada" text="ID" />

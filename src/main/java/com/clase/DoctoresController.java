@@ -25,8 +25,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * Controlador del mantenimiento de doctores: conecta el formulario y la tabla
+ * con DoctorDAOMySQL y comparte la seleccion con el controlador de citas.
+ */
 public class DoctoresController implements Initializable{
    
+    // Los fx:id de doctores.fxml se inyectan en estos campos.
     @FXML 
     private TextField iddoc, apeldoc, nomdoc, movildoc, emaildoc;
 
@@ -48,10 +53,12 @@ public class DoctoresController implements Initializable{
     boolean doctorExiste = false;
     private CitasController citasController;
 
+    // Enlace establecido por VentanaController para actualizar las citas.
     public void setCitasController(CitasController citasController) {
         this.citasController = citasController;
     }
 
+    // Prepara validaciones, especialidades, columnas y datos iniciales de la vista.
     @Override 
     public void initialize(URL url, ResourceBundle rb){
 
@@ -117,6 +124,7 @@ public class DoctoresController implements Initializable{
     }
 
 
+    // Lee las especialidades disponibles desde el JSON de resources.
     @FXML 
     private void cargarEspecialidades(){
         
@@ -149,7 +157,7 @@ public class DoctoresController implements Initializable{
         }
     }
 
-    //Letras Capitales
+    // Normaliza nombres y apellidos para presentarlos con iniciales mayusculas.
     private String letrasCapitales(String texto){
 
         String[] palabras = texto.toLowerCase().trim().split("\\s+");
@@ -165,7 +173,7 @@ public class DoctoresController implements Initializable{
 
     }
 
-    //Comprobar móvil
+    // Valida el movil cuando el campo pierde el foco.
     @FXML
     private void comprobarMovil(){
         String movil = movildoc.getText().trim().toUpperCase();
@@ -189,7 +197,7 @@ public class DoctoresController implements Initializable{
     }
      
 
-    //Comprobar email
+    // Valida el email cuando el campo pierde el foco.
     @FXML
     private void comprobarEmail(){
         String email = emaildoc.getText().trim();
@@ -214,7 +222,8 @@ public class DoctoresController implements Initializable{
     }
 
 
-     @FXML
+    // Construye el modelo y lo inserta o actualiza segun doctorExiste.
+    @FXML
     private void guardarDoctor(){
 
     
@@ -315,7 +324,7 @@ public class DoctoresController implements Initializable{
     } 
 
 
-    //Cargar doctores en la tabla
+    // Consulta el DAO y sustituye las filas de la tabla.
     @FXML 
     private void cargarDoctores(){
 
@@ -330,7 +339,7 @@ public class DoctoresController implements Initializable{
 
     }
 
-
+    // Elimina el doctor seleccionado tras confirmacion y actualiza la vista.
     @FXML 
     private void eliminarDoctor(){
 
@@ -369,6 +378,7 @@ public class DoctoresController implements Initializable{
     }
 
 
+    // Recupera el registro seleccionado y carga sus datos completos en el formulario.
     @FXML 
     private void cargarDoctor(){
 
@@ -418,6 +428,7 @@ public class DoctoresController implements Initializable{
 */
 
 
+    // Filtra la tabla por la especialidad elegida en el ComboBox.
     @FXML 
     private void buscaDocEspec(){
         String especialidad = espedoc.getValue();
@@ -448,6 +459,7 @@ public class DoctoresController implements Initializable{
 
 
 
+    // Restablece el formulario y el estado de seleccion/edicion.
     @FXML
     private void limpiarCampos() {
         doctorExiste = false;

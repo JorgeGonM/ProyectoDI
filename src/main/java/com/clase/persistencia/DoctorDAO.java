@@ -3,9 +3,12 @@ import java.util.List;
 
 import com.clase.modelo.Doctor;
 
-// Es la interfaz. Solo dice qué operaciones podemos hacer con un doctor, no cómo se hace.
-
+/**
+ * Contrato de persistencia de doctores; DoctorDAOMySQL implementa estas
+ * operaciones usando la base de datos MySQL.
+ */
 public interface DoctorDAO {
+    // Operaciones de mantenimiento y filtrado por especialidad.
     void guardarDoctor(Doctor doctor);
     List<Doctor> cargarDoctores();
     Doctor buscarDoctor(String iddoc);

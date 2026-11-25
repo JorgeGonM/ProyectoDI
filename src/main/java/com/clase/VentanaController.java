@@ -11,8 +11,13 @@ import javafx.stage.Stage;
 import com.clase.informes.imprimirPacientes;
 
 
+/**
+ * Controlador de la ventana contenedora: coordina las vistas incluidas en las
+ * pestanas y gestiona las acciones del menu y de la barra de herramientas.
+ */
 public class VentanaController {
 
+    // Los fx:include de ventana.fxml inyectan aqui sus controladores asociados.
     @FXML
     private PacientesController pacientesController;
 
@@ -22,23 +27,28 @@ public class VentanaController {
     @FXML
     private CitasController citasController;
 
+    // Comparte el controlador de citas para que las selecciones de paciente/doctor
+    // actualicen el formulario y la tabla de citas.
     @FXML
     private void initialize() {
         pacientesController.setCitasController(citasController);
         doctoresController.setCitasController(citasController);
     }
     
+    // Accion del menu Informes: delega la generacion y visualizacion del informe.
     @FXML
     private void informePacientes() {
         System.out.println("PULSADO INFORME PACIENTES");
         imprimirPacientes.mostrar();    
     }
 
+    // Accion compartida por la opcion Salir y el boton de la barra.
     @FXML 
     private void salirApp(){
         Platform.exit();
     }
 
+    // Carga una ventana independiente; su propio FXML crea AcercadeController.
     @FXML
     private void mostrarAcercade() throws IOException{
 
@@ -54,6 +64,7 @@ public class VentanaController {
 
     }
 
+    // Abre el explorador de archivos de Windows; lo invocan menu y barra.
     @FXML 
     
     private void abrirDir(){

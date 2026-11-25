@@ -1,6 +1,10 @@
 package com.clase.modelo;
 import java.time.LocalDate;
 
+/**
+ * Modelo de datos de paciente. Sus propiedades son leidas/escritas por el
+ * controlador y por PacienteDAOMySQL; la tabla usa los getters como valores.
+ */
 public class Paciente {
     private String dnipac;
     private String apelpac;
@@ -12,7 +16,7 @@ public class Paciente {
     private String propac;
     private String munipac;
 
-    //Modelo para crear paciente
+    // Constructor con todos los datos del formulario o de una consulta detallada.
     public Paciente(String dnipac, String apelpac, String nompac,
             String movilpac, String emailpac, LocalDate nacpac,
             String dirpac, String propac, String munipac) {
@@ -27,7 +31,7 @@ public class Paciente {
         this.munipac = munipac;
     }
 
-    //Modelo para la tabla
+    // Constructor reducido para las columnas mostradas en la tabla de pacientes.
     public Paciente(String dnipac, String apelpac, String nompac,
             String movilpac, String propac, String munipac) {
         this.dnipac = dnipac;
@@ -37,9 +41,7 @@ public class Paciente {
         this.propac = propac;
         this.munipac = munipac;
     }
-
-
-
+    // Getters y setters usados por PropertyValueFactory, los controladores y el DAO.
     public String getDni() {
         return dnipac;
     }

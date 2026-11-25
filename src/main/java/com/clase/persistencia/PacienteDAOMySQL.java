@@ -9,11 +9,13 @@ import java.util.List;
 
 import com.clase.modelo.Paciente;
 
+/** Implementacion MySQL del contrato PacienteDAO. */
 public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la interfaz
     
     @Override 
     public void guardarPaciente(Paciente paciente) throws SQLException {
         
+        // Los signos ? se rellenan con los valores del modelo mediante PreparedStatement.
         String sql = "INSERT INTO pacientes " 
                     + "(dnipac, apelpac, nompac, movilpac, emailpac, nacpac, dirpac, propac, munipac) "
                     + "VALUES (?,?,?,?,?,?,?,?,?)";
@@ -38,7 +40,7 @@ public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la 
 
     }
 
-    // seleccionar pacientes de la bbdd
+    // Recupera solo los datos necesarios para representar cada fila de la tabla.
      @Override
     public List<Paciente> cargarPacientes() {
 
@@ -76,7 +78,40 @@ public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la 
         return pacientes;
     }
 
+    // Filtro de provincia desactivado temporalmente; se conserva como referencia.
+    /*
+    @Override
+    public List<Paciente> buscarPacientesPorProvincia(String provincia) throws SQLException {
+        List<Paciente> pacientes = new ArrayList<>();
+        String sql = "SELECT dnipac, apelpac, nompac, movilpac, propac, munipac "
+                + "FROM pacientes "
+                + "WHERE propac = ? "
+                + "ORDER BY apelpac, nompac";
 
+        try (Connection conexion = ConexionMySQL.getConexion();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, provincia);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Paciente paciente = new Paciente(
+                            rs.getString("dnipac"),
+                            rs.getString("apelpac"),
+                            rs.getString("nompac"),
+                            rs.getString("movilpac"),
+                            rs.getString("propac"),
+                            rs.getString("munipac"));
+                    pacientes.add(paciente);
+                }
+            }
+        }
+
+        return pacientes;
+    }
+    */
+
+
+    // El DNI identifica el registro que se elimina.
     public void eliminarPaciente(String dni) {
         String sql = "DELETE FROM pacientes WHERE dnipac = ?";
 
@@ -95,7 +130,7 @@ public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la 
     }
 
 
-    // Buscar un paciente por DNI
+    // Devuelve el registro completo para cargarlo en el formulario de edicion.
     public Paciente buscarPaciente(String dni) {
 
         String sql = "SELECT dnipac, apelpac, nompac, movilpac, "
@@ -135,6 +170,7 @@ public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la 
     }
 
 
+    // Actualiza los campos editables; el DNI original se usa en la clausula WHERE.
     public void modificarPaciente(String dni, Paciente paciente) {
 
         String sql = "UPDATE pacientes SET "
@@ -173,6 +209,7 @@ public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la 
     }
 
 
+    // Busqueda invocada desde el boton de busqueda del formulario.
     public Paciente buscaPacDni(String dni) {
         
         String sql = "SELECT dnipac, apelpac, nompac, movilpac, "

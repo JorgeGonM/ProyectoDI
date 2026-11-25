@@ -15,15 +15,16 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
 
-
+/** Compila la plantilla JRXML, consulta MySQL y muestra el informe de pacientes. */
 public class imprimirPacientes {
 
 
     // =====================================================
-    // MÉTIDO MOSTRAR EL INFORME DE CLIENTES
+    // Genera el informe usando la plantilla y el logo almacenados en resources.
     // =====================================================
     public static void mostrar() {
     try {
+        // JasperReports recibe la misma conexion centralizada que usan los DAO.
         Connection conexion = ConexionMySQL.getConexion();
 
         if (conexion == null) {
@@ -43,6 +44,7 @@ public class imprimirPacientes {
             throw new Exception("No se encuentra img/logo.png en resources.");
         }
 
+        // La plantilla se compila, se rellena con parametros y se abre en una ventana.
         JasperReport jasperReport =
             JasperCompileManager.compileReport(informe);
 

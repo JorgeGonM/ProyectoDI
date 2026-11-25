@@ -15,8 +15,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 
+<!-- Vista raiz: fx:controller conecta los manejadores con VentanaController. -->
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clase.VentanaController">
    <children>
+      <!-- Menu y barra llaman a metodos del controlador mediante onAction. -->
       <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="1280.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="Archivo">
@@ -68,12 +70,14 @@
             </Button>
         </items>
       </ToolBar>
+      <!-- Cada pestana incluye su propio FXML y controlador especializado. -->
       <TabPane blendMode="OVERLAY" layoutX="10.0" layoutY="86.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="714.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
          <tabs>
             <Tab fx:id="panpacientes" text="Pacientes">
                <content>
                   <StackPane minHeight="0.0" minWidth="0.0" prefHeight="714.0" prefWidth="1280.0">
                      <children>
+                        <!-- fx:id tambien permite a VentanaController obtener PacientesController. -->
                         <fx:include fx:id="pacientes" source="pacientes.fxml" StackPane.alignment="TOP_CENTER" />
                      </children>
                   </StackPane>
@@ -83,6 +87,7 @@
                <content>
                   <StackPane minHeight="0.0" minWidth="0.0" prefHeight="714.0" prefWidth="1280.0">
                      <children>
+                        <!-- El controlador padre comparte este controlador con el de citas. -->
                         <fx:include fx:id="doctores" source="doctores.fxml" StackPane.alignment="TOP_CENTER" />
                      </children></StackPane>
                </content>
@@ -91,6 +96,7 @@
                <content>
                   <StackPane minHeight="0.0" minWidth="0.0" prefHeight="714.0" prefWidth="1280.0">
                      <children>
+                        <!-- VentanaController conecta este controlador con pacientes y doctores. -->
                         <fx:include fx:id="citas" source="citas.fxml" StackPane.alignment="CENTER" />
                      </children>
                   </StackPane>

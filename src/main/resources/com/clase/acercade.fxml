@@ -8,8 +8,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<!-- Ventana secundaria controlada por AcercadeController. -->
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clase.AcercadeController">
    <children>
+      <!-- onAction cierra la ventana actual desde el controlador. -->
       <Button fx:id="btnCerrarAcercade" layoutX="274.0" layoutY="315.0" mnemonicParsing="false" onAction="#cerrarAcercade" text="Cerrar" />
       <VBox alignment="CENTER" layoutX="202.0" layoutY="61.0" prefHeight="223.0" prefWidth="197.0">
          <children>
