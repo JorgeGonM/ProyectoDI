@@ -1,4 +1,5 @@
 com\clase\modelo\Doctor.class
+com\clase\informes\imprimirCitas.class
 com\clase\persistencia\CitaDAOMySQL.class
 com\clase\informes\imprimirPacientes.class
 com\clase\PacientesController.class
@@ -6,12 +7,17 @@ com\clase\DoctoresController.class
 com\clase\persistencia\PacienteDAOMySQL.class
 com\clase\persistencia\DoctorDAO.class
 com\clase\CitasController.class
+com\clase\modelo\Nota.class
 com\clase\VentanaController.class
 com\clase\App.class
+com\clase\persistencia\NotaDAOMySQL.class
 com\clase\persistencia\DoctorDAOMySQL.class
+com\clase\persistencia\NotaDAO.class
 com\clase\persistencia\CitaDAO.class
 com\clase\AcercadeController.class
+com\clase\informes\imprimirDoctores.class
 com\clase\modelo\Paciente.class
 com\clase\modelo\Cita.class
 com\clase\persistencia\PacienteDAO.class
 com\clase\persistencia\ConexionMySQL.class
+com\clase\NotasAdministrativasController.class

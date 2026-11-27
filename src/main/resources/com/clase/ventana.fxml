@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 <!-- Vista raiz: fx:controller conecta los manejadores con VentanaController. -->
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clase.VentanaController">
    <children>
       <!-- Menu y barra llaman a metodos del controlador mediante onAction. -->
@@ -36,14 +37,19 @@
           <Menu mnemonicParsing="false" text="Informes">
             <items>
                <MenuItem fx:id="informePacientes" mnemonicParsing="false" onAction="#informePacientes" text="Informe Pacientes" />
-               <MenuItem mnemonicParsing="false" text="Informe Doctores" />
-               <MenuItem mnemonicParsing="false" text="Imprimir Cita" />
+            <MenuItem fx:id="informeDoctores" mnemonicParsing="false" onAction="#informeDoctores" text="Informe Doctores" />
+            <MenuItem fx:id="informeCitas" mnemonicParsing="false" onAction="#informeCitas" text="Informe Citas" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Acerca">
                <items>
                   <MenuItem fx:id="acercade" mnemonicParsing="false" onAction="#mostrarAcercade" text="Acerca de" />
                </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Herramientas">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#mostrarNotas" text="Notas Administrativas" />
+              </items>
             </Menu>
         </menus>
       </MenuBar>

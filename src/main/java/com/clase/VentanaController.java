@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.clase.informes.imprimirPacientes;
+import com.clase.informes.imprimirDoctores;
+import com.clase.informes.imprimirCitas;
 
 
 /**
@@ -42,6 +44,16 @@ public class VentanaController {
         imprimirPacientes.mostrar();    
     }
 
+    @FXML
+    private void informeDoctores() {
+        imprimirDoctores.mostrar();
+    }
+
+    @FXML
+    private void informeCitas() {
+        imprimirCitas.mostrar();
+    }
+
     // Accion compartida por la opcion Salir y el boton de la barra.
     @FXML 
     private void salirApp(){
@@ -63,6 +75,22 @@ public class VentanaController {
         
 
     }
+
+
+    @FXML
+    private void mostrarNotas() throws IOException{
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/clase/notasadministrativas.fxml"));
+
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Nueva Nota");
+        stage.setScene(new Scene(root));
+        stage.show();
+
+
+    }
+
 
     // Abre el explorador de archivos de Windows; lo invocan menu y barra.
     @FXML 

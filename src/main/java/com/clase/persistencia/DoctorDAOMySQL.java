@@ -217,6 +217,50 @@ public class DoctorDAOMySQL implements DoctorDAO { // Implementación de la inte
         return doctores;
     }
 
+    @Override
+    public List<Doctor> buscarDoctoresPorApellidos(String apellidos) {
+        return buscarDoctoresPorTexto("apeldoc", apellidos);
+    }
+
+    @Override
+    public List<Doctor> buscarDoctoresPorNombre(String nombre) {
+        return buscarDoctoresPorTexto("nomdoc", nombre);
+    }
+
+    @Override
+    public List<Doctor> buscarDoctoresPorMovil(String movil) {
+        return buscarDoctoresPorTexto("movildoc", movil);
+    }
+
+    private List<Doctor> buscarDoctoresPorTexto(String campo, String valor) {
+        List<Doctor> doctores = new ArrayList<>();
+        String sql = "SELECT iddoc, apeldoc, nomdoc, movildoc, espedoc "
+                + "FROM doctores WHERE " + campo + " LIKE ? "
+                + "ORDER BY apeldoc, nomdoc";
+
+        try (Connection conexion = ConexionMySQL.getConexion();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + valor.trim() + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Doctor doctor = new Doctor(
+                            rs.getString("iddoc"),
+                            rs.getString("apeldoc"),
+                            rs.getString("nomdoc"),
+                            rs.getString("movildoc"),
+                            rs.getString("espedoc"));
+                    doctores.add(doctor);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar doctores: " + e.getMessage());
+        }
+
+        return doctores;
+    }
+
                     
 
 

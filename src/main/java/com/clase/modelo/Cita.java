@@ -22,6 +22,7 @@ public class Cita {
     private String nombrePaciente;
     private String nombreDoctor;
     private String especialidad;
+    private String tarifa;
 
     // Constructor vacio disponible para herramientas que requieren crear el bean.
     public Cita() {
@@ -31,7 +32,7 @@ public class Cita {
     public Cita(int idcita, String citadnipac, String citaiddoc,
                 LocalDate fechacita, LocalTime horacita,
                 String motivo, String diagnostico,
-                String tratamiento, String estadocita) {
+                String tratamiento, String estadocita, String tarifa) {
 
         this.idcita = idcita;
         this.citadnipac = citadnipac;
@@ -42,6 +43,7 @@ public class Cita {
         this.diagnostico = diagnostico;
         this.tratamiento = tratamiento;
         this.estadocita = estadocita;
+        this.tarifa = tarifa;
     }
 
     // Getters y setters que conectan el modelo con PropertyValueFactory y los DAO.
@@ -140,5 +142,13 @@ public class Cita {
 
     public void setEspecialidad(String especialidad) {
         this.especialidad = especialidad;
+    }
+
+    public String getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(String tarifa) {
+        this.tarifa = tarifa;
     }
 }

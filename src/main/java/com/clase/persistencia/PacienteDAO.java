@@ -17,4 +17,7 @@ public interface PacienteDAO {
     void eliminarPaciente(String dni);
     void modificarPaciente(String dni, Paciente paciente);
     Paciente buscaPacDni(String dni);
+    List<Paciente> buscarPacientesPorApellidos(String apellidos);
+    List<Paciente> buscarPacientesPorNombre(String nombre);
+    List<Paciente> buscarPacientesPorMovil(String movil);
 }

@@ -42,8 +42,8 @@ public class CitaDAOMySQL implements CitaDAO {
         // RETURN_GENERATED_KEYS permite recuperar el ID autogenerado por MySQL.
         String sql = "INSERT INTO citas "
                 + "(citadnipac, citaiddoc, fechacita, horacita, motivo, "
-                + "diagnostico, tratamiento, estadocita) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                + "diagnostico, tratamiento, estadocita, tarifa) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conexion = ConexionMySQL.getConexion();
              PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -56,6 +56,7 @@ public class CitaDAOMySQL implements CitaDAO {
             ps.setString(6, cita.getDiagnostico());
             ps.setString(7, cita.getTratamiento());
             ps.setString(8, cita.getEstadocita());
+            ps.setString(9, cita.getTarifa());
             ps.executeUpdate();
 
             try (ResultSet claves = ps.getGeneratedKeys()) {
@@ -71,7 +72,7 @@ public class CitaDAOMySQL implements CitaDAO {
         List<Cita> citas = new ArrayList<>();
         // Los JOIN agregan nombres y especialidad para mostrar la cita en la tabla.
         String sql = "SELECT c.idcita, c.citadnipac, c.citaiddoc, c.fechacita, "
-                + "c.horacita, c.motivo, c.diagnostico, c.tratamiento, c.estadocita, "
+                + "c.horacita, c.motivo, c.diagnostico, c.tratamiento, c.estadocita, c.tarifa, "
                 + "CONCAT(p.nompac, ' ', p.apelpac) AS nombrePaciente, "
                 + "CONCAT(d.nomdoc, ' ', d.apeldoc) AS nombreDoctor, d.espedoc AS especialidad "
                 + "FROM citas c "
@@ -110,7 +111,8 @@ public class CitaDAOMySQL implements CitaDAO {
                             rs.getString("motivo"),
                             rs.getString("diagnostico"),
                             rs.getString("tratamiento"),
-                            rs.getString("estadocita"));
+                            rs.getString("estadocita"),
+                            rs.getString("tarifa"));
                     cita.setNombrePaciente(rs.getString("nombrePaciente"));
                     cita.setNombreDoctor(rs.getString("nombreDoctor"));
                     cita.setEspecialidad(rs.getString("especialidad"));
@@ -126,7 +128,7 @@ public class CitaDAOMySQL implements CitaDAO {
     public boolean modificarCita(Cita cita) throws SQLException {
         // Actualiza todos los campos por la clave primaria idcita.
         String sql = "UPDATE citas SET citadnipac = ?, citaiddoc = ?, fechacita = ?, "
-                + "horacita = ?, motivo = ?, diagnostico = ?, tratamiento = ?, estadocita = ? "
+                + "horacita = ?, motivo = ?, diagnostico = ?, tratamiento = ?, estadocita = ?, tarifa = ? "
                 + "WHERE idcita = ?";
 
         try (Connection conexion = ConexionMySQL.getConexion();
@@ -140,7 +142,8 @@ public class CitaDAOMySQL implements CitaDAO {
             ps.setString(6, cita.getDiagnostico());
             ps.setString(7, cita.getTratamiento());
             ps.setString(8, cita.getEstadocita());
-            ps.setInt(9, cita.getIdcita());
+            ps.setString(9, cita.getTarifa());
+            ps.setInt(10, cita.getIdcita());
             return ps.executeUpdate() > 0;
         }
     }

@@ -44,7 +44,7 @@ public class CitasController implements Initializable {
 
     // Controles enlazados por fx:id en citas.fxml.
     @FXML
-    private TextField idcita, citaiddoc, citadnipac, motivo;
+    private TextField idcita, citaiddoc, citadnipac, motivo, tarifa;
 
     @FXML
     private Label lblNombrePaciente;
@@ -68,7 +68,7 @@ public class CitasController implements Initializable {
     private TableColumn<Cita, Integer> colidcita;
 
     @FXML
-    private TableColumn<Cita, String> colcitaiddoc, colespec, colestadocita;
+    private TableColumn<Cita, String> colcitaiddoc, colespec, colestadocita, coltarifacita;
 
     @FXML
     private TableColumn<Cita, LocalDate> colfechacita;
@@ -113,6 +113,9 @@ public class CitasController implements Initializable {
         colfechacita.setCellValueFactory(new PropertyValueFactory<>("fechacita"));
         colhoracita.setCellValueFactory(new PropertyValueFactory<>("horacita"));
         colestadocita.setCellValueFactory(new PropertyValueFactory<>("estadocita"));
+        coltarifacita.setCellValueFactory(new PropertyValueFactory<>("tarifa"));
+
+        
 
         cargarHorarios();
         chkpendiente.setSelected(true);
@@ -172,7 +175,8 @@ public class CitasController implements Initializable {
                 motivo.getText().trim(),
                 diagnostico.getText().trim(),
                 tratamiento.getText().trim(),
-                estado);
+                estado,
+                tarifa.getText().trim());
         boolean modificando = citaSeleccionada != null;
 
         try {
@@ -305,6 +309,62 @@ public class CitasController implements Initializable {
         tablaCitas.getItems().setAll(citasFiltradas);
     }
 
+    @FXML
+    private void buscarCitasPorFecha() {
+        if (fechacita.getValue() == null) {
+            mostrarAviso("Selecciona una fecha antes de buscar.");
+            return;
+        }
+        if (citasCargadas.isEmpty()) {
+            mostrarAviso("No hay citas cargadas para filtrar.");
+            return;
+        }
+
+        List<Cita> citasFiltradas = new ArrayList<>();
+        for (Cita cita : citasCargadas) {
+            if (fechacita.getValue().equals(cita.getFechacita())) {
+                citasFiltradas.add(cita);
+            }
+        }
+
+        if (citasFiltradas.isEmpty()) {
+            mostrarAviso("No se encontraron citas con esa fecha.");
+            tablaCitas.getItems().clear();
+            return;
+        }
+        tablaCitas.getItems().setAll(citasFiltradas);
+        tablaCitas.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void buscarCitasPorHora() {
+        String hora = horacita.getValue();
+        if (hora == null || hora.trim().isEmpty()) {
+            mostrarAviso("Selecciona una hora antes de buscar.");
+            return;
+        }
+        if (citasCargadas.isEmpty()) {
+            mostrarAviso("No hay citas cargadas para filtrar.");
+            return;
+        }
+
+        LocalTime horaBuscada = LocalTime.parse(hora, DateTimeFormatter.ofPattern("H:mm"));
+        List<Cita> citasFiltradas = new ArrayList<>();
+        for (Cita cita : citasCargadas) {
+            if (horaBuscada.equals(cita.getHoracita())) {
+                citasFiltradas.add(cita);
+            }
+        }
+
+        if (citasFiltradas.isEmpty()) {
+            mostrarAviso("No se encontraron citas con esa hora.");
+            tablaCitas.getItems().clear();
+            return;
+        }
+        tablaCitas.getItems().setAll(citasFiltradas);
+        tablaCitas.getSelectionModel().clearSelection();
+    }
+
     // Traduce las casillas excluyentes a la etiqueta que se guarda en la BD.
     private String obtenerEstadoSeleccionado() {
         if (chkpendiente.isSelected()) {
@@ -328,6 +388,7 @@ public class CitasController implements Initializable {
         lblNombrePaciente.setText("");
         citasCargadas.clear();
         tablaCitas.getItems().clear();
+
     }
 
     // Limpia solo los campos propios de la cita, preservando paciente y doctor.
@@ -343,6 +404,7 @@ public class CitasController implements Initializable {
         chkpendiente.setSelected(true);
         chkatendida.setSelected(false);
         chkanulada.setSelected(false);
+        tarifa.clear();
     }
 
     // Centraliza los avisos de validacion que no requieren mostrar una excepcion.

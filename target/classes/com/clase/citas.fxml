@@ -17,6 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <!-- Formulario y tabla de citas, conectados con CitasController. -->
+
 <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clase.CitasController">
    <children>
       <!-- Paciente y doctor se seleccionan desde sus propias pestanas, no aqui. -->
@@ -34,9 +35,9 @@
             <Label text="ID Cita:" />
             <TextField fx:id="idcita" disable="true" />
             <Label text="ID Doctor:" />
-            <TextField fx:id="citaiddoc" disable="true" />
+            <TextField fx:id="citaiddoc" disable="true" styleClass="alineacion-centrada" />
             <Label text="DNI Paciente:" />
-            <TextField fx:id="citadnipac" disable="true" prefHeight="25.0" prefWidth="266.0" />
+            <TextField fx:id="citadnipac" disable="true" prefHeight="25.0" prefWidth="266.0" styleClass="alineacion-centrada" />
             <Button fx:id="btnLimpiarCitas" mnemonicParsing="false" onAction="#limpiarCamposCita">
                <graphic>
                   <ImageView blendMode="MULTIPLY" fitHeight="34.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
@@ -58,13 +59,31 @@
             <TextField fx:id="motivo" prefHeight="25.0" prefWidth="254.0" />
             <Label text="Fecha:" />
             <DatePicker fx:id="fechacita" prefHeight="25.0" prefWidth="127.0" />
+            <Button accessibleText="Buscar citas por fecha" mnemonicParsing="false" onAction="#buscarCitasPorFecha" prefHeight="32.0" prefWidth="38.0">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/lupa.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Label text="Hora:" />
             <ComboBox fx:id="horacita" prefWidth="150.0" />
+            <Button accessibleText="Buscar citas por hora" mnemonicParsing="false" onAction="#buscarCitasPorHora" prefHeight="32.0" prefWidth="38.0">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/lupa.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Label text="Estado Cita:" />
             <CheckBox fx:id="chkpendiente" mnemonicParsing="false" onAction="#gestionarExclusion" text="Pendiente" />
             <CheckBox fx:id="chkatendida" mnemonicParsing="false" onAction="#gestionarExclusion" text="Atendida" />
             <CheckBox fx:id="chkanulada" mnemonicParsing="false" onAction="#gestionarExclusion" text="Anulada" />
-            <Button mnemonicParsing="false" onAction="#buscarCitasPorEstado" accessibleText="Buscar citas por estado" prefHeight="32.0" prefWidth="38.0">
+            <Button accessibleText="Buscar citas por estado" mnemonicParsing="false" onAction="#buscarCitasPorEstado" prefHeight="32.0" prefWidth="38.0">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -85,6 +104,19 @@
             <TextArea fx:id="diagnostico" prefHeight="130.0" prefWidth="440.0" />
             <Label text="Tratamiento:" />
             <TextArea fx:id="tratamiento" prefHeight="130.0" prefWidth="440.0" />
+         </children>
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label text="Tarifa:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="tarifa" prefHeight="25.0" prefWidth="93.0" />
          </children>
          <VBox.margin>
             <Insets left="20.0" right="20.0" />
@@ -128,8 +160,9 @@
                   <TableColumn fx:id="colcitaiddoc" prefWidth="250.0" text="Doctor" />
                   <TableColumn fx:id="colespec" prefWidth="200.0" text="Especialidad" />
                   <TableColumn fx:id="colfechacita" prefWidth="150.0" styleClass="alineacion-centrada" text="Dia" />
-                  <TableColumn fx:id="colhoracita" prefWidth="150.0" text="Hora" />
-                  <TableColumn fx:id="colestadocita" prefWidth="200.0" text="Estado" />
+                  <TableColumn fx:id="colhoracita" prefWidth="100.0" styleClass="alineacion-centrada" text="Hora" />
+                  <TableColumn fx:id="colestadocita" prefWidth="150.0" text="Estado" />
+                  <TableColumn fx:id="coltarifacita" prefWidth="100.0" styleClass="alineacion-centrada" text="Tarifa" />
                </columns>
                <opaqueInsets>
                   <Insets />

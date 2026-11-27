@@ -45,6 +45,7 @@ public class PacientesController implements Initializable{
 
     @FXML 
     private Button btnguardarpac, btndelpac, btnLimpiarPac, btnBuscarPac;
+    private Button btnBuscarApellidos, btnBuscarNombre, btnBuscarMovil;
 
     @FXML
     private TableView<Paciente> tablaPacientes;
@@ -340,7 +341,6 @@ public class PacientesController implements Initializable{
             return;
         }
 
-        /*
         if (nacpac.getValue().isAfter(LocalDate.now())) {
             Alert alerta = new Alert(Alert.AlertType.WARNING);
             alerta.setTitle("Fecha de nacimiento no válida");
@@ -349,7 +349,6 @@ public class PacientesController implements Initializable{
             alerta.showAndWait();
             return;
         }
-        */
 
     
         String dni = dnipac.getText();
@@ -604,6 +603,49 @@ public class PacientesController implements Initializable{
         
     }
 
+    @FXML
+    private void buscaPacApellidos() {
+        buscarPacientesPorCampo(
+                apelpac.getText(),
+                new PacienteDAOMySQL().buscarPacientesPorApellidos(apelpac.getText()));
+    }
+
+    @FXML
+    private void buscaPacNombre() {
+        buscarPacientesPorCampo(
+                nompac.getText(),
+                new PacienteDAOMySQL().buscarPacientesPorNombre(nompac.getText()));
+    }
+
+    @FXML
+    private void buscaPacMovil() {
+        buscarPacientesPorCampo(
+                movilpac.getText(),
+                new PacienteDAOMySQL().buscarPacientesPorMovil(movilpac.getText()));
+    }
+
+    private void buscarPacientesPorCampo(String valor, List<Paciente> pacientes) {
+        if (valor == null || valor.trim().isEmpty()) {
+            mostrarAvisoBusqueda("Introduce un dato para realizar la búsqueda.");
+            return;
+        }
+        if (pacientes.isEmpty()) {
+            mostrarAvisoBusqueda("No se encontraron pacientes.");
+            return;
+        }
+
+        tablaPacientes.getItems().setAll(pacientes);
+        tablaPacientes.getSelectionModel().clearSelection();
+    }
+
+    private void mostrarAvisoBusqueda(String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.WARNING);
+        alerta.setTitle("Aviso");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
 
 
     // Limpia los controles del formulario; se reutiliza tras guardar y desde el FXML.
@@ -618,6 +660,9 @@ public class PacientesController implements Initializable{
         dirpac.clear();
         propac.getSelectionModel().clearSelection();
         munipac.getSelectionModel().clearSelection();
+        tablaPacientes.getSelectionModel().clearSelection();
+        pacienteExiste = false;
+        cargarPacientes();
     }
 
 

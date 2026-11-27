@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="citas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fb49d834-7f34-4f9e-8221-86e1fd63d228">
+	<parameter name="LOGO" class="java.net.URL"/>
+	<queryString>
+		<![CDATA[SELECT c.idcita, c.fechacita, c.horacita,
+                            c.estadocita, c.citadnipac, c.citaiddoc,
+                        CONCAT(p.nompac, ' ', p.apelpac) AS paciente,
+                        CONCAT(d.nomdoc, ' ', d.apeldoc) AS doctor,
+                        d.espedoc AS especialidad
+                 FROM citas c
+                 LEFT JOIN pacientes p ON c.citadnipac = p.dnipac
+                 LEFT JOIN doctores d ON c.citaiddoc = d.iddoc
+                 ORDER BY c.fechacita, c.horacita]]>
+	</queryString>
+	<field name="idcita" class="java.lang.Integer"/>
+	<field name="fechacita" class="java.sql.Date"/>
+	<field name="horacita" class="java.lang.String"/>
+	<field name="paciente" class="java.lang.String"/>
+	<field name="doctor" class="java.lang.String"/>
+	<field name="especialidad" class="java.lang.String"/>
+	<field name="estadocita" class="java.lang.String"/>
+	<field name="citadnipac" class="java.lang.String"/>
+	<field name="citaiddoc" class="java.lang.Integer"/>
+	<title>
+		<band height="76">
+			<image>
+				<reportElement x="52" y="0" width="50" height="50" uuid="a3b66487-af75-414f-b172-cfb5999805e5"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="200" y="15" width="180" height="30" uuid="1e592f24-1668-46e7-a0dd-824706860abf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO CITAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="26">
+			<staticText>
+				<reportElement x="5" y="0" width="35" height="20" uuid="eebe0d10-1ff2-4e50-8113-abafcbf05c6a"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="0" width="60" height="20" uuid="0b8d6f39-ab97-43c0-9f1f-7eabb8aef6d2"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DNIPaciente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="0" width="50" height="20" uuid="65708947-8d64-4f98-ba06-95f153b17de8"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IDDoctor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="0" width="100" height="20" uuid="2b4ed7cc-38b5-4905-a05f-2c9d8d4103d0"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="60" height="20" uuid="905e425a-29b9-4591-9c0c-1e95115c1738"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="0" width="75" height="20" uuid="07c09a60-4452-4738-a284-e2b6e8d80ba7"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="25" width="550" height="1" uuid="4d7a906f-634a-4e7a-a74b-8b70062a6a85"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="32">
+			<textField>
+				<reportElement x="5" y="2" width="35" height="20" uuid="51daf585-e5d7-4ffe-aad8-1f4a940441ac"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{idcita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="2" width="60" height="20" uuid="a22f3ac6-9217-458a-a1a2-b149144910e3"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{citadnipac}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="128" y="2" width="50" height="20" uuid="c121d50b-6947-48ee-bab2-e2e3ef63e787"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{citaiddoc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="193" y="2" width="100" height="20" uuid="62e68d8f-6cf3-4092-ad55-52d3b2b14f43"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fechacita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="2" width="60" height="20" uuid="a79c713b-0abb-4e9f-ab94-e46b0d33bd3f"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{horacita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="402" y="2" width="75" height="20" uuid="c380aabf-5c3c-4458-89ff-7131ee6d9263"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{estadocita}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

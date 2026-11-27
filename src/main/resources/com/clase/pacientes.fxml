@@ -42,8 +42,26 @@
          </Button>
          <Label text="Apellidos:" />
          <TextField fx:id="apelpac" maxWidth="-Infinity" prefHeight="25.0" prefWidth="230.0" />
+         <Button fx:id="btnBuscarApellidos" mnemonicParsing="false" onAction="#buscaPacApellidos" prefHeight="32.0" prefWidth="38.0">
+            <graphic>
+               <ImageView fitHeight="23.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../img/lupa.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
          <Label text="Nombre:" />
          <TextField fx:id="nompac" maxWidth="-Infinity" prefWidth="190.0" />
+         <Button fx:id="btnBuscarNombre" mnemonicParsing="false" onAction="#buscaPacNombre" prefHeight="32.0" prefWidth="38.0">
+            <graphic>
+               <ImageView fitHeight="23.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../img/lupa.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
          <Button fx:id="btnLimpiarPac" mnemonicParsing="false" onAction="#limpiarCampos">
             <graphic>
                <ImageView blendMode="MULTIPLY" fitHeight="34.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
@@ -65,6 +83,15 @@
          <DatePicker fx:id="nacpac" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="32.0" prefWidth="160.0" />
          <Label text="Móvil:" />
          <TextField fx:id="movilpac" prefWidth="150.0" styleClass="alineacion-centrada" />
+         <Button fx:id="btnBuscarMovil" mnemonicParsing="false" onAction="#buscaPacMovil" prefHeight="32.0" prefWidth="38.0">
+            <graphic>
+               <ImageView fitHeight="23.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../img/lupa.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
          <Label text="Email:" />
          <TextField fx:id="emailpac" prefHeight="32.0" prefWidth="300.0" />
       </children>

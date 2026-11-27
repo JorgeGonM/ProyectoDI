@@ -457,6 +457,50 @@ public class DoctoresController implements Initializable{
         
     }
 
+    @FXML
+    private void buscaDocApellidos() {
+        buscarDoctoresPorCampo(
+                apeldoc.getText(),
+                new DoctorDAOMySQL().buscarDoctoresPorApellidos(apeldoc.getText()));
+    }
+
+    @FXML
+    private void buscaDocNombre() {
+        buscarDoctoresPorCampo(
+                nomdoc.getText(),
+                new DoctorDAOMySQL().buscarDoctoresPorNombre(nomdoc.getText()));
+    }
+
+    @FXML
+    private void buscaDocMovil() {
+        buscarDoctoresPorCampo(
+                movildoc.getText(),
+                new DoctorDAOMySQL().buscarDoctoresPorMovil(movildoc.getText()));
+    }
+
+    private void buscarDoctoresPorCampo(String valor, List<Doctor> doctores) {
+        if (valor == null || valor.trim().isEmpty()) {
+            mostrarAvisoBusqueda("Introduce un dato para realizar la búsqueda.");
+            return;
+        }
+        if (doctores.isEmpty()) {
+            mostrarAvisoBusqueda("No se encontraron doctores.");
+            return;
+        }
+
+        tablaDoctores.getItems().setAll(doctores);
+        tablaDoctores.getSelectionModel().clearSelection();
+        doctorExiste = false;
+    }
+
+    private void mostrarAvisoBusqueda(String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.WARNING);
+        alerta.setTitle("Aviso");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
 
 
     // Restablece el formulario y el estado de seleccion/edicion.
@@ -472,6 +516,7 @@ public class DoctoresController implements Initializable{
         coledocsi.setSelected(false);
         coledocno.setSelected(false);
         tablaDoctores.getSelectionModel().clearSelection();
+        cargarDoctores();
     } 
 
 

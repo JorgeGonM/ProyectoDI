@@ -248,4 +248,49 @@ public class PacienteDAOMySQL implements PacienteDAO { // Implementación de la 
         return null;
     }
 
+    @Override
+    public List<Paciente> buscarPacientesPorApellidos(String apellidos) {
+        return buscarPacientesPorTexto("apelpac", apellidos);
+    }
+
+    @Override
+    public List<Paciente> buscarPacientesPorNombre(String nombre) {
+        return buscarPacientesPorTexto("nompac", nombre);
+    }
+
+    @Override
+    public List<Paciente> buscarPacientesPorMovil(String movil) {
+        return buscarPacientesPorTexto("movilpac", movil);
+    }
+
+    private List<Paciente> buscarPacientesPorTexto(String campo, String valor) {
+        List<Paciente> pacientes = new ArrayList<>();
+        String sql = "SELECT dnipac, apelpac, nompac, movilpac, propac, munipac "
+                + "FROM pacientes WHERE " + campo + " LIKE ? "
+                + "ORDER BY apelpac, nompac";
+
+        try (Connection conexion = ConexionMySQL.getConexion();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + valor.trim() + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Paciente paciente = new Paciente(
+                            rs.getString("dnipac"),
+                            rs.getString("apelpac"),
+                            rs.getString("nompac"),
+                            rs.getString("movilpac"),
+                            rs.getString("propac"),
+                            rs.getString("munipac"));
+                    pacientes.add(paciente);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar pacientes: " + e.getMessage());
+        }
+
+        return pacientes;
+    }
+
 }
